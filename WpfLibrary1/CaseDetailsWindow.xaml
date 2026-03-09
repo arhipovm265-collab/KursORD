@@ -1,0 +1,200 @@
+<Window x:Class="WpfLibrary1.CaseDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Детали дела" Height="650" Width="1200" MinWidth="800" MinHeight="520" WindowStartupLocation="CenterOwner" Background="#0B2545" Foreground="#FFFFFF"
+        WindowState="Maximized" ResizeMode="CanResize">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="420" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Vertical">
+                <TextBlock Text="Дело" FontWeight="Bold" FontSize="16" Foreground="#FFFFFF" />
+                <Grid Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Номер:" VerticalAlignment="Center" Grid.Column="0" Foreground="#FFFFFF" FontWeight="Bold" />
+                    <TextBox x:Name="CaseNumberBox" Grid.Column="1" HorizontalAlignment="Stretch" />
+                </Grid>
+
+                <Grid Margin="0,6,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Заголовок:" VerticalAlignment="Center" Grid.Column="0" Foreground="#FFFFFF" FontWeight="Bold" />
+                    <TextBox x:Name="TitleBox" Grid.Column="1" HorizontalAlignment="Stretch" />
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                    <TextBlock Text="Статус:" VerticalAlignment="Center" Width="80" Foreground="#FFFFFF" FontWeight="Bold" />
+                    <ComboBox x:Name="StatusBox" Width="340" DisplayMemberPath="Name" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                    <TextBlock Text="Ведёт:" VerticalAlignment="Center" Width="60" Foreground="#FFFFFF" FontWeight="Bold" />
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Name="CaseLead" VerticalAlignment="Center" Width="264" />
+                        <TextBlock x:Name="CaseLeadEmail" VerticalAlignment="Center" Width="264" FontSize="12" Foreground="Gray" />
+                        <TextBlock x:Name="CaseLeadPhone" VerticalAlignment="Center" Width="264" FontStyle="Italic" FontSize="12" Foreground="Gray" />
+                    </StackPanel>
+                    <Button x:Name="EditLeadButton" Content="Изменить" Width="91" Margin="4,0,0,0" Click="OnEditLead" />
+                </StackPanel>
+
+                <Grid Margin="0,6,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Место:" VerticalAlignment="Center" Grid.Column="0" Foreground="#FFFFFF" FontWeight="Bold" />
+
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="200" />
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox x:Name="LocationStreetBox" Grid.Column="0" Margin="0,0,50,0" DisplayMemberPath="Street" IsEditable="True" IsTextSearchEnabled="True" SelectionChanged="OnLocationSelectionChanged" Grid.ColumnSpan="2" />
+                        <TextBox x:Name="LocationHouseBox" Grid.Column="1" Margin="45,0,9,0" ToolTip="Дом" />
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Город:" VerticalAlignment="Center" Width="60" Margin="0,0,4,0" />
+                            <ComboBox x:Name="LocationCityBox" Width="136" IsEditable="True" IsTextSearchEnabled="True" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                <TextBlock Text="Описание:" />
+                <TextBox x:Name="DescriptionBox" TextWrapping="Wrap" AcceptsReturn="True" Height="160" HorizontalAlignment="Stretch" />
+            </StackPanel>
+        </Grid>
+
+        <TabControl Grid.Row="1" Margin="0,10,0,0">
+            <TabItem Header="Подозреваемые">
+                <DockPanel LastChildFill="True">
+                    <DataGrid x:Name="SuspectsGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" DockPanel.Dock="Top" Height="240" SelectionChanged="OnSuspectSelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding FullName, Mode=OneWay}" Width="200" />
+                            <DataGridTextColumn Header="Дата рождения" Binding="{Binding DateOfBirth}" Width="200" />
+                            <DataGridTextColumn Header="Фигурировал в других делах" Binding="{Binding AppearedInOtherCasesText}" Width="200" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid DockPanel.Dock="Bottom" Margin="0,6,0,0" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="160" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Vertical">
+                            <TextBlock Text="Фамилия / Имя / Отчество" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                    <TextBlock Text="Фамилия:" Width="70" VerticalAlignment="Center" />
+                                    <TextBox x:Name="NewSuspectLastName" Width="70" Height="22" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="8,0,85,0">
+                                    <TextBlock Text="Имя:" Width="40" VerticalAlignment="Center" />
+                                    <TextBox x:Name="NewSuspectFirstName" Width="101" Height="22" />
+                                </StackPanel>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                <TextBlock Text="Отчество:" Width="70" VerticalAlignment="Center" />
+                                <TextBox x:Name="NewSuspectPatronymic" Width="219" Height="22" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="8,0,0,0">
+                            <TextBlock Text="Дата рождения" />
+                            <DatePicker x:Name="NewSuspectDob" Width="140" Height="40" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Orientation="Vertical" Margin="8,0,0,0">
+                            <TextBlock Height="35" ><Run Text="Фигурировал в "/><Run Text="других"/><LineBreak/><Run Text="делах"/></TextBlock>
+                            <TextBlock x:Name="NewSuspectAppearedInOtherCases" Width="140" Height="24" FontStyle="Italic" VerticalAlignment="Center" />
+                        </StackPanel>
+
+                        <Button Grid.Column="3" x:Name="AddSuspectButton" Content="Добавить&#xD;&#xA;подозреваемого" Height="56" VerticalAlignment="Center" Click="OnAddSuspect" Margin="5,0,0,0" />
+                        <Button Grid.Column="4" x:Name="EditSuspectButton" Content="Изменить&#xD;&#xA;подозреваемого" Height="56" VerticalAlignment="Center" Click="OnEditSuspect" Margin="5,0,0,0" />
+                        <Button Grid.Column="5" x:Name="DeleteSuspectButton" Content="Удалить&#xD;&#xA;подозреваемого" Width="150" Height="57" VerticalAlignment="Center" Click="OnDeleteSuspect" Margin="5,0,5,0" />
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Доказательства">
+                <DockPanel LastChildFill="True">
+                    <DataGrid x:Name="EvidenceGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" DockPanel.Dock="Top" Height="220">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Тег" Binding="{Binding Tag}" />
+                            <DataGridTextColumn Header="Описание" Binding="{Binding Description}" />
+                            <DataGridTextColumn Header="Собрано" Binding="{Binding CollectedAt}" />
+                            <DataGridTextColumn Header="Собрал" Binding="{Binding CollectedBy.FullName, Mode=OneWay}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="0,6,0,0" VerticalAlignment="Center">
+                        <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                            <TextBlock Text="Тег" />
+                            <TextBox x:Name="NewEvidenceTag" Width="240" ToolTip="Тег" Height="24" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                            <TextBlock Text="Описание" />
+                            <TextBox x:Name="NewEvidenceDescription" Width="420" ToolTip="Краткое описание" Height="24" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                            <TextBlock Text="Собрано" />
+                            <DatePicker x:Name="NewEvidenceDate" Width="140" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                            <TextBlock Text="Собрал" />
+                            <ComboBox x:Name="NewEvidenceCollector" Width="260" DisplayMemberPath="FullName" Height="24" />
+                        </StackPanel>
+
+                        <Button x:Name="AddEvidenceButton" Content="Добавить улики" Width="200" Height="30" Click="OnAddEvidence" />
+                        <Button x:Name="EditEvidenceButton" Content="Изменить" Width="100" Height="30" Margin="8,0,0,0" Click="OnEditEvidence" />
+                        <Button x:Name="DeleteEvidenceButton" Content="Удалить" Width="100" Height="30" Margin="8,0,0,0" Click="OnDeleteEvidence" />
+                    </StackPanel>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
+            <Button x:Name="SaveButton" Content="Сохранить" Width="90" Height="28" Margin="0,0,8,0" Click="OnSave" />
+            <Button x:Name="ExportButton" Content="Экспорт в Excel" Width="140" Height="28" Margin="0,0,8,0" Click="OnExport" />
+            <Button x:Name="CloseButton" Content="Закрыть" Width="90" Height="28" Click="OnClose" />
+        </StackPanel>
+    </Grid>
+</Window>

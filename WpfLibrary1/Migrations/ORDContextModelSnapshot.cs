@@ -1,0 +1,453 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using WpfLibrary1.Data;
+
+#nullable disable
+
+namespace WpfLibrary1.Migrations
+{
+    [DbContext(typeof(ORDContext))]
+    partial class ORDContextModelSnapshot : ModelSnapshot
+    {
+        protected override void BuildModel(ModelBuilder modelBuilder)
+        {
+#pragma warning disable 612, 618
+            modelBuilder
+                .HasAnnotation("ProductVersion", "9.0.13")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("WpfLibrary1.CaseRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CaseNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("LeadOfficerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CaseNumber")
+                        .IsUnique();
+
+                    b.HasIndex("LeadOfficerId");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("CaseRecords");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("House")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Street")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Evidence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CaseRecordId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CollectedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CollectedByOfficerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CaseRecordId");
+
+                    b.HasIndex("CollectedByOfficerId");
+
+                    b.ToTable("Evidence", (string)null);
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("House")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Street")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Officer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("HiredDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Patronymic")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("RankId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("RankId");
+
+                    b.ToTable("Officers");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.OfficerRank", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OfficerRanks");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Suspect", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Patronymic")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Suspects");
+                });
+
+            modelBuilder.Entity("CaseRecordSuspects", b =>
+                {
+                    b.Property<int>("CaseRecordId").HasColumnType("int");
+                    b.Property<int>("SuspectId").HasColumnType("int");
+
+                    b.HasKey("CaseRecordId", "SuspectId");
+
+                    b.HasIndex("SuspectId");
+
+                    b.ToTable("CaseRecordSuspects");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.CaseStatusHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CaseRecordId").HasColumnType("int");
+
+                    b.Property<int>("StatusId").HasColumnType("int");
+
+                    b.Property<DateTime>("ChangedAt").HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CaseRecordId");
+
+                    b.ToTable("CaseStatusHistories");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OfficerId").HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("OfficerId").IsUnique();
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.CaseRecord", b =>
+                {
+                    b.HasOne("WpfLibrary1.Officer", "LeadOfficer")
+                        .WithMany("CasesLed")
+                        .HasForeignKey("LeadOfficerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WpfLibrary1.Location", "Location")
+                        .WithMany("Cases")
+                        .HasForeignKey("LocationId");
+
+                    b.Navigation("LeadOfficer");
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Evidence", b =>
+                {
+                    b.HasOne("WpfLibrary1.CaseRecord", "CaseRecord")
+                        .WithMany("EvidenceItems")
+                        .HasForeignKey("CaseRecordId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WpfLibrary1.Officer", "CollectedBy")
+                        .WithMany("CollectedEvidence")
+                        .HasForeignKey("CollectedByOfficerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("CaseRecord");
+
+                    b.Navigation("CollectedBy");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Officer", b =>
+                {
+                    b.HasOne("WpfLibrary1.Department", "Department")
+                        .WithMany("Officers")
+                        .HasForeignKey("DepartmentId");
+
+                    b.HasOne("WpfLibrary1.OfficerRank", "Rank")
+                        .WithMany("Officers")
+                        .HasForeignKey("RankId");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Rank");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Suspect", b =>
+                {
+                    b.HasOne("WpfLibrary1.CaseRecord", "CaseRecord")
+                        .WithMany("Suspects")
+                        .HasForeignKey("CaseRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CaseRecord");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.User", b =>
+                {
+                    b.HasOne("WpfLibrary1.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId");
+
+                    b.HasOne("WpfLibrary1.Officer", "Officer")
+                        .WithOne("User")
+                        .HasForeignKey("WpfLibrary1.User", "OfficerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Role");
+
+                    b.Navigation("Officer");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.CaseRecord", b =>
+                {
+                    b.Navigation("EvidenceItems");
+
+                    b.Navigation("Suspects");
+                    b.Navigation("StatusHistories");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Department", b =>
+                {
+                    b.Navigation("Officers");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Location", b =>
+                {
+                    b.Navigation("Cases");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Officer", b =>
+                {
+                    b.Navigation("CasesLed");
+
+                    b.Navigation("CollectedEvidence");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.OfficerRank", b =>
+                {
+                    b.Navigation("Officers");
+                });
+
+            modelBuilder.Entity("WpfLibrary1.Role", b =>
+                {
+                    b.Navigation("Users");
+                });
+#pragma warning restore 612, 618
+        }
+    }
+}

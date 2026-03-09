@@ -1,0 +1,78 @@
+<Window x:Class="WpfLibrary1.AddOfficerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Добавить сотрудника" Height="440" Width="480" WindowStartupLocation="CenterOwner" Background="#0B2545" Foreground="#FFFFFF"
+        ResizeMode="CanResize">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,6">
+            <TextBlock Text="Фамилия:" Width="120" VerticalAlignment="Center" Foreground="#FFFFFF" FontWeight="Bold" />
+            <TextBox x:Name="LastNameBox" Width="240" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,6">
+            <TextBlock Text="Имя:" Width="120" VerticalAlignment="Center" Foreground="#FFFFFF" FontWeight="Bold" />
+            <TextBox x:Name="FirstNameBox" Width="240" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,0,0,6">
+            <TextBlock Text="Отчество:" Width="120" VerticalAlignment="Center" Foreground="#FFFFFF" FontWeight="Bold" />
+            <TextBox x:Name="PatronymicBox" Width="240" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,0,0,6">
+            <TextBlock Text="Email:" Width="120" VerticalAlignment="Center" Foreground="#FFFFFF" FontWeight="Bold" />
+            <TextBox x:Name="EmailBox" Width="240" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="0,0,0,6">
+            <TextBlock Text="Телефон:" Width="120" VerticalAlignment="Center" Foreground="#FFFFFF" FontWeight="Bold" />
+            <TextBox x:Name="PhoneBox" Width="240" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="5" Orientation="Vertical" Margin="0,20,0,0">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                <TextBlock Text="Звание:" Width="120" VerticalAlignment="Center" Foreground="#FFFFFF" FontWeight="Bold" />
+                <ComboBox x:Name="RankBox" Width="240" DisplayMemberPath="Name" IsEditable="True" IsTextSearchEnabled="True" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                <TextBlock Text="Можно назначать ведущим:" Width="170" VerticalAlignment="Center" Foreground="#FFFFFF" FontWeight="Bold" />
+                <CheckBox x:Name="CanBeLeadCheck" IsChecked="True" VerticalAlignment="Center" />
+            </StackPanel>
+            <CheckBox x:Name="CreateAccountCheck" Content="Создать учётную запись для сотрудника" Checked="OnCreateAccountChecked" Unchecked="OnCreateAccountChecked" Visibility="Collapsed" Foreground="#FFFFFF" />
+            <StackPanel x:Name="AccountPanel" Orientation="Vertical" Margin="20,6,0,0" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <TextBlock Text="Логин:" Width="120" VerticalAlignment="Center" Foreground="#FFFFFF" />
+                    <TextBox x:Name="NewUsernameBox" Width="240" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <TextBlock Text="Пароль:" Width="120" VerticalAlignment="Center" Foreground="#FFFFFF" />
+                    <PasswordBox x:Name="NewPasswordBox" Width="240" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <TextBlock Text="Подтвердить пароль:" Width="120" VerticalAlignment="Center" Foreground="#FFFFFF" />
+                    <PasswordBox x:Name="NewPasswordConfirmBox" Width="240" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="6" Margin="0,12,0,0">
+            <Button x:Name="AddButton" Width="120" Click="OnAdd" Height="24">Добавить</Button>
+            <Button Width="120" Margin="8,0,0,0" Click="OnCancel" Height="24">Отмена</Button>
+        </StackPanel>
+    </Grid>
+</Window>

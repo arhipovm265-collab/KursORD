@@ -1,0 +1,63 @@
+<Window x:Class="WpfLibrary1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfLibrary1"
+        mc:Ignorable="d"
+        Title="ОРД - Программа" Height="600" Width="1000" Background="#0B2545" Foreground="#FFFFFF"
+        WindowState="Maximized" ResizeMode="CanResize">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <DockPanel Grid.Row="0" LastChildFill="True" Margin="6">
+            <TextBlock Text="Дела" Style="{StaticResource HeaderText}" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+            <TextBlock Text="(Права редактирования: admin или руководитель дела)" Foreground="#D6E8FF" VerticalAlignment="Center" Margin="12,0,0,0"/>
+        </DockPanel>
+
+        <!-- Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left toolbar -->
+            <StackPanel Grid.Column="0" Background="{StaticResource PrimaryBrush}" Margin="0,0,8,0">
+                <StackPanel Margin="12,12,12,0">
+                    <Button Content="Добавить" Command="{Binding AddSampleCaseCommand}" />
+                    <Button Content="Удалить" Command="{Binding DeleteCaseCommand}" />
+                    <Button Content="Изменить ведущего" Command="{Binding EditLeadOfficerCommand}" />
+                    <Button Content="Подробнее" Command="{Binding ShowDetailsCommand}" />
+                    <Button Content="Сотрудники" Click="OnManageOfficers" Visibility="Collapsed" x:Name="ManageOfficersButton" />
+                    <Button Content="Отделы" Click="OnManageDepartments" Visibility="Collapsed" x:Name="ManageDepartmentsButton" />
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Main list -->
+            <DataGrid Grid.Column="1" ItemsSource="{Binding Cases}" AutoGenerateColumns="False" CanUserAddRows="False" SelectedItem="{Binding SelectedCase, Mode=TwoWay}" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Номер дела" Binding="{Binding CaseNumber}" Width="120"/>
+                    <DataGridTextColumn Header="Заголовок" Binding="{Binding Title}" Width="200"/>
+                    <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="140"/>
+                    <DataGridTextColumn Header="Отдел" Binding="{Binding LeadOfficer.Department.Name}" Width="160" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Ведёт" Binding="{Binding LeadOfficer.FullName, Mode=OneWay}" Width="200" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Создан" Binding="{Binding CreatedAt}" Width="200"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Window>
