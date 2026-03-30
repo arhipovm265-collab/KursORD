@@ -380,7 +380,7 @@ namespace WpfLibrary1
             LoadCase();
         }
 
-        
+
 
         private void OnSave(object sender, RoutedEventArgs e)
         {
@@ -392,10 +392,26 @@ namespace WpfLibrary1
                 var cr = ctx.CaseRecords.FirstOrDefault(x => x.Id == _case.Id);
                 if (cr == null) return;
 
+                var oldStatus = cr.StatusId;
+
                 cr.Title = TitleBox.Text;
                 cr.CaseNumber = CaseNumberBox.Text;
                 cr.Description = DescriptionBox.Text;
-                if (StatusBox.SelectedValue is int sid) cr.StatusId = sid;
+
+                if (StatusBox.SelectedValue is int sid)
+                {
+                    if (sid != oldStatus)
+                    {
+                        cr.StatusId = sid;
+                        ctx.CaseStatusHistories.Add(new CaseStatusHistory
+                        {
+                            CaseRecordId = cr.Id,
+                            StatusId = sid,
+                            ChangedAt = DateTime.UtcNow
+                        });
+                    }
+                }
+
                 var streetText = LocationStreetBox.Text?.Trim();
                 var houseText = LocationHouseBox.Text?.Trim();
                 var cityText = LocationCityBox.Text?.Trim();
@@ -418,7 +434,10 @@ namespace WpfLibrary1
                 }
                 else if (!string.IsNullOrEmpty(streetText))
                 {
-                    var newLoc2 = ctx.Locations.FirstOrDefault(l => l.Street == streetText && (l.House == houseText) && (l.City == cityText || (l.City == null && cityText == null)));
+                    var newLoc2 = ctx.Locations.FirstOrDefault(l =>
+                        l.Street == streetText &&
+                        l.House == houseText &&
+                        (l.City == cityText || (l.City == null && cityText == null)));
                     if (newLoc2 == null)
                     {
                         newLoc2 = new Location { Street = streetText, House = string.IsNullOrEmpty(houseText) ? null : houseText, City = string.IsNullOrEmpty(cityText) ? null : cityText };
@@ -427,6 +446,8 @@ namespace WpfLibrary1
                     }
                     cr.LocationId = newLoc2.Id;
                 }
+
+                cr.UpdatedAt = DateTime.UtcNow;
 
                 ctx.SaveChanges();
                 MessageBox.Show("Сохранено.", "OK", MessageBoxButton.OK, MessageBoxImage.Information);
