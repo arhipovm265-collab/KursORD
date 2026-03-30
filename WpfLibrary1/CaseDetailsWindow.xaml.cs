@@ -629,7 +629,7 @@ namespace WpfLibrary1
                 var projectDir = FindProjectRoot() ?? AppContext.BaseDirectory;
 
                 var safeCaseNumber = string.IsNullOrWhiteSpace(full.CaseNumber) ? full.Id.ToString() : string.Concat(full.CaseNumber.Split(Path.GetInvalidFileNameChars()));
-                var filename = $"case_{safeCaseNumber}_{DateTime.UtcNow:yyyyMMddHHmmss}.xlsx";
+                var filename = $"case_{safeCaseNumber}_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
                 var fullPath = Path.Combine(projectDir, filename);
 
                 using var wb = new XLWorkbook();
@@ -644,9 +644,9 @@ namespace WpfLibrary1
                 ws.Cell(4, 1).Value = "Статус";
                 ws.Cell(4, 2).Value = ((CaseStatus)full.StatusId).ToString();
                 ws.Cell(5, 1).Value = "Дата создания";
-                ws.Cell(5, 2).Value = full.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss");
+                ws.Cell(5, 2).Value = full.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                 ws.Cell(6, 1).Value = "Дата обновления";
-                ws.Cell(6, 2).Value = full.UpdatedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? string.Empty;
+                ws.Cell(6, 2).Value = full.UpdatedAt?.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") ?? string.Empty;
 
                 ws.Columns().AdjustToContents();
 
@@ -714,7 +714,7 @@ namespace WpfLibrary1
                 {
                     wsEvi.Cell(r, 1).Value = ev.Tag;
                     wsEvi.Cell(r, 2).Value = ev.Description;
-                    wsEvi.Cell(r, 3).Value = ev.CollectedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? string.Empty;
+                    wsEvi.Cell(r, 3).Value = ev.CollectedAt?.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") ?? string.Empty;
                     wsEvi.Cell(r, 4).Value = ev.CollectedBy?.FullName ?? string.Empty;
                     wsEvi.Cell(r, 5).Value = ev.CollectedBy?.Email ?? string.Empty;
                     wsEvi.Cell(r, 6).Value = ev.CollectedBy?.Phone ?? string.Empty;
@@ -731,7 +731,7 @@ namespace WpfLibrary1
                 {
                     wsHist.Cell(r, 1).Value = h.StatusId;
                     wsHist.Cell(r, 2).Value = ((CaseStatus)h.StatusId).ToString();
-                    wsHist.Cell(r, 3).Value = h.ChangedAt.ToString("yyyy-MM-dd HH:mm:ss");
+                    wsHist.Cell(r, 3).Value = h.ChangedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                     r++;
                 }
                 wsHist.Columns().AdjustToContents();
