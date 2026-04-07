@@ -84,10 +84,19 @@ namespace WpfLibrary1
 
         private void OnAdd(object sender, RoutedEventArgs e)
         {
+            if (_departmentId.HasValue)
+            {
+                var selDlg = new SelectOfficerWindow(_departmentId.Value);
+                selDlg.Owner = this;
+                var res = selDlg.ShowDialog();
+                if (res == true) Load();
+                return;
+            }
+
             var dlg = new AddOfficerWindow(_isAdmin, null, _departmentId);
             dlg.Owner = this;
-            var res = dlg.ShowDialog();
-            if (res == true)
+            var res2 = dlg.ShowDialog();
+            if (res2 == true)
             {
                 Load();
             }
