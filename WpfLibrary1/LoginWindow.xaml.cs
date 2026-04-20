@@ -108,8 +108,7 @@ namespace WpfLibrary1
 
         private static byte[] ComputeHash(string input)
         {
-            using var sha = SHA256.Create();
-            return sha.ComputeHash(Encoding.Unicode.GetBytes(input));
+            return AuthHelper.ComputeHash(input);
         }
 
         private void OnFirstRun(object sender, RoutedEventArgs e)

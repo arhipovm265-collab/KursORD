@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="TestKR/TestKR.csproj" Id="def30164-e8d1-472d-8b86-08139dd7891e" />
   <Project Path="WpfLibrary1/KursORD.csproj" />
 </Solution>
